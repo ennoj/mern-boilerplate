@@ -1,37 +1,24 @@
 import React, { Component } from 'react';
 import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import uuid from 'uuid';
+import { connect } from 'react-redux';
+import { getLinks, deleteLink } from '../actions/linkActions';
+import PropTypes from 'prop-types';
 
 class LinkList extends Component {
-  state = {
-    links: [
-      { id: uuid(), name: 'Google', url: 'https://www.google.com' },
-      { id: uuid(), name: 'Reddit', url: 'https://www.reddit.com' },
-      { id: uuid(), name: 'YouTube', url: 'https://www.youtube.com' }
-    ]
+  componentDidMount() {
+    this.props.getLinks();
+  }
+
+  onDeleteClick = id => {
+    this.props.deleteLink(id);
   };
 
   render() {
-    const { links } = this.state;
+    const { links } = this.props.link;
 
     return (
       <Container>
-        <Button
-          color='dark'
-          style={{ marginBottom: '2rem' }}
-          onClick={() => {
-            const name = prompt('Enter link name');
-            const url = prompt('Enter link url');
-            if (name && url) {
-              this.setState(state => ({
-                links: [...state.links, { id: uuid(), name: name, url: url }]
-              }));
-            }
-          }}
-        >
-          Lisää linkki
-        </Button>
         <ListGroup>
           <TransitionGroup className='link-list'>
             {links.map(({ id, name, url }) => (
@@ -41,11 +28,7 @@ class LinkList extends Component {
                     className='remove-btn'
                     color='danger'
                     size='sm'
-                    onClick={() => {
-                      this.setState(state => ({
-                        links: state.links.filter(link => link.id !== id)
-                      }));
-                    }}
+                    onClick={this.onDeleteClick.bind(this, id)}
                   >
                     &times;
                   </Button>
@@ -60,4 +43,16 @@ class LinkList extends Component {
   }
 }
 
-export default LinkList;
+LinkList.propTypes = {
+  getLinks: PropTypes.func.isRequired,
+  link: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  link: state.link
+});
+
+export default connect(
+  mapStateToProps,
+  { getLinks, deleteLink }
+)(LinkList);
