@@ -1,6 +1,8 @@
+import axios from 'axios';
 import { GET_LINKS, ADD_LINK, DELETE_LINK, LINKS_LOADING } from './types';
 
-export const getLinks = () => {
+// Type = action
+export const getLinks = () => dispatch => {
   return {
     // Type = action
     type: GET_LINKS
