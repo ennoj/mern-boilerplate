@@ -11,7 +11,6 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { addLink } from '../actions/linkActions';
-import uuid from 'uuid';
 
 class LinkModal extends Component {
   state = {
@@ -37,7 +36,6 @@ class LinkModal extends Component {
     e.preventDefault();
 
     const newLink = {
-      id: uuid(),
       name: this.state.name,
       url: this.state.url
     };
@@ -65,11 +63,10 @@ class LinkModal extends Component {
           <ModalBody>
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
-                <Label for='link'>Linkin tiedot</Label>
                 <Input
                   type='text'
                   name='name'
-                  id='link'
+                  id='linkName'
                   placeholder='Linkin nimi'
                   onChange={this.onChange}
                 />
@@ -77,8 +74,8 @@ class LinkModal extends Component {
                 <Input
                   type='text'
                   name='url'
-                  id='link'
-                  placeholder='Linkin nimi'
+                  id='linkUrl'
+                  placeholder='Linkin osoite (URL)'
                   onChange={this.onChange}
                 />
 

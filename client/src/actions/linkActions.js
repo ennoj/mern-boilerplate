@@ -2,26 +2,33 @@ import axios from 'axios';
 import { GET_LINKS, ADD_LINK, DELETE_LINK, LINKS_LOADING } from './types';
 
 // Type = action
+// Thunk is needed with dispatch
 export const getLinks = () => dispatch => {
-  return {
-    // Type = action
-    type: GET_LINKS
-  };
+  dispatch(setLinksLoading());
+  axios.get('/api/links').then(res =>
+    dispatch({
+      type: GET_LINKS,
+      payload: res.data
+    })
+  );
 };
 
-export const deleteLink = id => {
-  return {
-    type: DELETE_LINK,
-    // Because item reducer needs to know the id of link to delete, payload is needed
-    payload: id
-  };
+export const addLink = link => dispatch => {
+  axios.post('/api/links', link).then(res =>
+    dispatch({
+      type: ADD_LINK,
+      payload: res.data
+    })
+  );
 };
 
-export const addLink = link => {
-  return {
-    type: ADD_LINK,
-    payload: link
-  };
+export const deleteLink = id => dispatch => {
+  axios.delete(`/api/links/${id}`).then(res =>
+    dispatch({
+      type: DELETE_LINK,
+      payload: id
+    })
+  );
 };
 
 export const setLinksLoading = () => {

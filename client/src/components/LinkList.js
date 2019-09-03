@@ -21,14 +21,14 @@ class LinkList extends Component {
       <Container>
         <ListGroup>
           <TransitionGroup className='link-list'>
-            {links.map(({ id, name, url }) => (
-              <CSSTransition classNames='fade' key={id} timeout={500}>
+            {links.map(({ _id, name, url }) => (
+              <CSSTransition classNames='fade' key={_id} timeout={500}>
                 <ListGroupItem>
                   <Button
                     className='remove-btn'
                     color='danger'
                     size='sm'
-                    onClick={this.onDeleteClick.bind(this, id)}
+                    onClick={this.onDeleteClick.bind(this, _id)}
                   >
                     &times;
                   </Button>
